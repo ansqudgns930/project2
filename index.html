@@ -32,7 +32,82 @@
 var map = new naver.maps.Map('map', mapOptions);
   
   
-  
+  // 마커를 표시할 위치와 내용을 가지고 있는 객체 배열입니다 
+var positions = [
+    {
+        content: '<div>예술대</div>', 
+        latlng: new naver.maps.LatLng(35.94352341978497, 126.6816722942691)
+    },
+    {
+        content: '<div>공대3호관</div>', 
+        latlng: new naver.maps.LatLng(35.94201235802412, 126.68109934629985)
+    },
+    {
+        content: '<div>아카데미홀</div>', 
+        latlng: new naver.maps.LatLng(35.942462165475476, 126.68333037096798)
+    },
+    {
+        content: '<div>대학본부</div>',
+        latlng: new naver.maps.LatLng(35.94619885324512, 126.68322196088478)
+    },
+        {
+        content: '<div>서울시청</div>',
+        latlng: new naver.maps.LatLng(37.56626385934718, 126.98037697115508)
+    },
+        {
+        content: '<div>덕수궁</div>',
+        latlng: new naver.maps.LatLng(37.565871282555506, 126.97509085574764)
+    },
+        {
+        content: '<div>인천시청</div>',
+        latlng: new naver.maps.LatLng(37.455896693499, 126.70552953960322)
+    },
+        {
+        content: '<div></div>',
+        latlng: new naver.maps.LatLng(37.4418879509946, 126.70168450152666)
+    }
+];
+    
+    for (var i = 0; i < positions.length; i ++) {
+    // 마커를 생성합니다
+    var marker = new naver.maps.Marker({
+        map: map, // 마커를 표시할 지도
+        position: positions[i].latlng // 마커의 위치
+    });
+
+    // 마커에 표시할 인포윈도우를 생성합니다 
+    var infowindow = new naver.maps.InfoWindow({
+        content: positions[i].content // 인포윈도우에 표시할 내용
+    });
+
+    // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+    // 이벤트 리스너로는 클로저를 만들어 등록합니다 
+    // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+    naver.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
+    naver.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
+}
+
+// 인포윈도우를 표시하는 클로저를 만드는 함수입니다 
+function makeOverListener(map, marker, infowindow) {
+    return function() {
+        infowindow.open(map, marker);
+    };
+}
+
+// 인포윈도우를 닫는 클로저를 만드는 함수입니다 
+function makeOutListener(infowindow) {
+    return function() {
+        infowindow.close();
+    };
+}
+    
+   var clusterer = new kakao.maps.MarkerClusterer({
+        map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체 
+        averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정 
+        minLevel: 10 // 클러스터 할 최소 지도 레벨 
+    });
+    
+    
   
   // HTML5의 geolocation으로 사용할 수 있는지 확인합니다 
 if (navigator.geolocation) {
