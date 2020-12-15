@@ -68,47 +68,8 @@ var positions = [
     }
 ];
     
-    for (var i = 0; i < positions.length; i ++) {
-    // 마커를 생성합니다
-    var marker = new naver.maps.Marker({
-        map: map, // 마커를 표시할 지도
-        position: positions[i].latlng // 마커의 위치
-    });
 
-    // 마커에 표시할 인포윈도우를 생성합니다 
-    var infowindow1 = new naver.maps.InfoWindow({
-        content: positions[i].content // 인포윈도우에 표시할 내용
-    });
 
-    // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
-    // 이벤트 리스너로는 클로저를 만들어 등록합니다 
-    // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
-    naver.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
-    naver.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
-}
-
-// 인포윈도우를 표시하는 클로저를 만드는 함수입니다 
-function makeOverListener(map, marker, infowindow1) {
-    return function() {
-        infowindow.open(map, marker);
-    };
-}
-
-// 인포윈도우를 닫는 클로저를 만드는 함수입니다 
-function makeOutListener(infowindow) {
-    return function() {
-        infowindow.close();
-    };
-}
-    
-   var clusterer = new kakao.maps.MarkerClusterer({
-        map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체 
-        averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정 
-        minLevel: 10 // 클러스터 할 최소 지도 레벨 
-    });
-    
-    
-  
   // HTML5의 geolocation으로 사용할 수 있는지 확인합니다 
 if (navigator.geolocation) {
     
@@ -137,15 +98,20 @@ if (navigator.geolocation) {
   
 // 지도에 마커와 인포윈도우를 표시하는 함수입니다
 function displayMarker(locPosition, message) {
-
+    for (var i = 0; i < positions.length; i ++) {
     // 마커를 생성합니다
     var marker = new naver.maps.Marker({  
         map: map, 
-        position: locPosition
+        position: locPosition,
+        position: positions[i].latlng // 마커의 위치
     }); 
-    
+    naver.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
+    naver.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
+}
     var iwContent = message, // 인포윈도우에 표시할 내용
         iwRemoveable = true;
+    
+     content: positions[i].content // 인포윈도우에 표시할 내용
 
     // 인포윈도우를 생성합니다
     var infowindow = new naver.maps.InfoWindow({
@@ -159,7 +125,13 @@ function displayMarker(locPosition, message) {
     // 지도 중심좌표를 접속위치로 변경합니다
     map.setCenter(locPosition);      
 }    
-  
+    
+    
+   var clusterer = new naver.maps.MarkerClusterer({
+        map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체 
+        averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정 
+        minLevel: 10 // 클러스터 할 최소 지도 레벨 
+    });
   
   
     //공대3호관 
