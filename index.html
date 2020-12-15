@@ -32,12 +32,24 @@
 var map = new naver.maps.Map('map', mapOptions);
   
   var marker = new naver.maps.Marker({
-    position: new naver.maps.LatLng(35.94352341978497, 126.6816722942691)//예술대
-              new naver.maps.LatLng(35.94201235802412, 126.68109934629985)//공대3호관
-              new naver.maps.LatLng(35.942462165475476, 126.68333037096798),//아카데미홀   
+    position: new naver.maps.LatLng(35.94352341978497, 126.6816722942691),//예술대
     map: map
 });
 
+      var marker = new naver.maps.Marker({
+    position: new naver.maps.LatLng(35.94201235802412, 126.68109934629985),//공대3호관
+    map: map
+});
+   
+      var marker = new naver.maps.Marker({
+    position: new naver.maps.LatLng(35.942462165475476, 126.68333037096798),//아카데미홀
+    map: map
+});
+    
+      var marker = new naver.maps.Marker({
+    position: new naver.maps.LatLng(37.56626385934718, 126.98037697115508),//서울시청
+    map: map
+});
 
 function onLoad() {
     var data = accidentDeath.searchResult.accidentDeath;
